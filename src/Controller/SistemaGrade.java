@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Grafo;
+import Model.Vertice;
 import Util.LeitorArquivo;
 import java.util.ArrayList;
 import java.util.Map;
@@ -99,6 +100,30 @@ public class SistemaGrade {
         String nome = scanner.nextLine();
         grafo.adicionarVertice(nome);
         System.out.println(" [OK] Matéria '" + nome + "' adicionada com sucesso.");
+        System.out.print("Gostaria de adicionar uma depêndencia? ");
+        System.out.println("S/N");
+        String resposta = scanner.nextLine();
+        if (resposta.equals("N")){
+            System.out.println(" Matéria criada sem depências");
+        }if (resposta.equals("S")){
+            adicionarDependencia(nome);
+        }
+    }
+
+    private void adicionarDependencia(String destino) {
+        System.out.println(">>> Nova Dependência");
+        System.out.println("Matéria DEPENDENTE: " + destino);
+        System.out.print("Matéria PRÉ-REQUISITO: ");
+        String origem = scanner.nextLine();
+        Vertice vdestino = grafo.criarVertice(destino);
+        Vertice vorigem = grafo.criarVertice(origem);
+        ArrayList listadevertices = grafo.getVertices();
+        if (!listadevertices.contains(vdestino) || !listadevertices.contains(vorigem)){
+            System.out.println("Uma ou mais matérias ainda não foram criadas, não é possível criar dependência");
+        }else{
+            grafo.adicionarAresta(origem, destino, 1.0f);
+            System.out.println(" [OK] Vínculo criado: " + origem + " -> " + destino);
+        }
     }
 
     private void adicionarDependencia() {
@@ -107,9 +132,15 @@ public class SistemaGrade {
         String origem = scanner.nextLine();
         System.out.print("Matéria DEPENDENTE: ");
         String destino = scanner.nextLine();
-
-        grafo.adicionarAresta(origem, destino, 1.0f);
-        System.out.println(" [OK] Vínculo criado: " + origem + " -> " + destino);
+        Vertice vdestino = grafo.criarVertice(destino);
+        Vertice vorigem = grafo.criarVertice(origem);
+        ArrayList listadevertices = grafo.getVertices();
+        if (!listadevertices.contains(vdestino) || !listadevertices.contains(vorigem)){
+            System.out.println("Matérias ainda não criadas, não é possível criar dependência");
+        }else{
+            grafo.adicionarAresta(origem, destino, 1.0f);
+            System.out.println(" [OK] Vínculo criado: " + origem + " -> " + destino);
+        }
     }
 
     private void verificarCiclos() {

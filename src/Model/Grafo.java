@@ -27,6 +27,15 @@ public class Grafo<T> {
      * Otimização: Verifica se o vértice já existe para evitar duplicatas,
      * garantindo integridade dos dados e economizando memória.
      */
+    public Vertice<T> criarVertice(T valor){
+        Vertice<T> existente = obterVertice(valor);
+        if (existente != null) {
+            return existente;
+        }
+        Vertice<T> novo = new Vertice<T>(valor);
+        return novo;
+    }
+
     public Vertice<T> adicionarVertice(T valor){
         Vertice<T> existente = obterVertice(valor);
         if (existente != null) {
@@ -225,4 +234,6 @@ public class Grafo<T> {
     public int obterTamanho() {
         return this.vertices.size();
     }
+
+    public ArrayList<Vertice<T>> getVertices(){return this.vertices;};
 }
